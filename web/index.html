@@ -1,0 +1,1067 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Insta</title>
+<link rel="icon" href="/logo.png">
+<script>try{var t=localStorage.getItem("insta-theme");if(t==="light"||t==="dark")document.documentElement.dataset.theme=t}catch(e){}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#EDF3EE; --card:#FFFFFF; --ink:#14261D; --muted:#5A6E63;
+  --green:#0B5D45; --green-soft:#D9EBE1; --red:#D9363E; --line:#C9D8CE; --on-green:#fff;
+}
+@media (prefers-color-scheme:dark){
+  :root{--bg:#0F1A15;--card:#17261E;--ink:#E6F0E9;--muted:#93A89B;--green:#3FBF92;--green-soft:#1F3A2D;--line:#2A4034;--on-green:#0F1A15}
+}
+:root[data-theme=dark]{--bg:#0F1A15;--card:#17261E;--ink:#E6F0E9;--muted:#93A89B;--green:#3FBF92;--green-soft:#1F3A2D;--line:#2A4034;--on-green:#0F1A15}
+:root[data-theme=light]{--bg:#EDF3EE;--card:#FFFFFF;--ink:#14261D;--muted:#5A6E63;--green:#0B5D45;--green-soft:#D9EBE1;--line:#C9D8CE;--on-green:#fff}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Hind Siliguri","Nirmala UI","Noto Sans Bengali","Kalpurush","Vrinda",system-ui,sans-serif;line-height:1.6;padding:env(safe-area-inset-top) 0 env(safe-area-inset-bottom)}
+main{max-width:620px;margin:0 auto;padding:24px 18px 48px}
+.brand{display:flex;align-items:center;gap:14px;margin-bottom:6px}
+.brand img{width:58px;height:58px;border-radius:15px;box-shadow:0 4px 14px rgba(11,93,69,.28)}
+h1{font-size:1.9rem;line-height:1.2;margin:0;font-weight:700}
+.by{font-size:.85rem;color:var(--muted);margin:0}
+.sub{color:var(--muted);margin:0 0 18px}
+.tabs{display:flex;gap:6px;background:var(--green-soft);padding:5px;border-radius:14px;margin-bottom:20px}
+.tabs button{flex:1;background:transparent;color:var(--ink);padding:10px;border-radius:10px;font-size:1rem}
+.tabs button[aria-selected=true]{background:var(--card);font-weight:700}
+.field{display:flex;flex-direction:column;gap:10px}
+input[type=url]{width:100%;font:inherit;font-size:1.05rem;padding:16px;border:2px solid var(--line);border-radius:14px;background:var(--card);color:var(--ink)}
+input[type=url]:focus{outline:3px solid var(--green);outline-offset:1px;border-color:var(--green)}
+button{font:inherit;font-weight:500;border:0;border-radius:14px;padding:15px 18px;cursor:pointer;background:var(--green);color:var(--on-green);font-size:1.05rem}
+button:focus-visible,.tabs button:focus-visible{outline:3px solid var(--red);outline-offset:2px}
+button:disabled{opacity:.55;cursor:wait}
+.err{color:var(--red);margin:12px 0 0;min-height:1.4em}
+[hidden]{display:none!important}
+.card{background:var(--card);border-radius:18px;padding:14px;margin-top:20px;border:1px solid var(--line)}
+.thumb{width:100%;aspect-ratio:16/9;object-fit:cover;border-radius:12px;background:var(--green-soft)}
+.title{font-weight:700;margin:12px 0 2px;font-size:1.1rem;overflow-wrap:anywhere}
+.meta{color:var(--muted);font-size:.92rem;margin:0}
+.group{margin-top:16px}
+.group h3{font-size:.95rem;margin:0 0 8px;color:var(--muted);font-weight:500}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chips label{cursor:pointer;position:relative}
+.chips input{position:absolute;opacity:0}
+.chips span{display:inline-block;padding:8px 14px;border-radius:999px;border:2px solid var(--line);background:var(--card)}
+.chips input:checked+span{background:var(--green-soft);border-color:var(--green);font-weight:700}
+.chips input:focus-visible+span{outline:3px solid var(--green)}
+.check{display:flex;gap:10px;align-items:flex-start;margin-top:16px;padding:12px;border-radius:12px;background:var(--green-soft);cursor:pointer}
+.check input{margin-top:6px;width:18px;height:18px;accent-color:var(--green)}
+.go{width:100%;background:var(--red);color:#fff;margin-top:18px}
+.bar{height:12px;background:var(--green-soft);border-radius:99px;overflow:hidden;margin:16px 0 6px}
+.bar i{display:block;height:100%;width:0;background:var(--green);transition:width .3s}
+.save{display:block;width:100%;text-align:center;background:var(--green);color:var(--on-green);padding:14px;border-radius:14px;font-weight:700;margin-top:12px}
+.note{font-size:.85rem;color:var(--muted);margin-top:26px}
+.hist-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:4px}
+.hist-head h2{font-size:1.2rem;margin:0}
+.link-btn{background:transparent;color:var(--red);padding:6px 10px;font-size:.95rem}
+.item{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px;margin-top:12px}
+.item .row{display:flex;gap:8px;margin-top:10px}
+.item .save,.item button{margin:0;flex:1;padding:11px;font-size:.98rem}
+.item button.del{background:transparent;color:var(--red);border:2px solid var(--line);flex:0 0 auto}
+.empty{text-align:center;color:var(--muted);padding:36px 10px}
+.ext{margin-top:22px;border:1px solid var(--line);border-radius:14px;background:var(--card);padding:4px 14px}
+.ext summary{cursor:pointer;padding:10px 0;font-weight:500}
+.ext ol{margin:4px 0 12px;padding-left:22px}
+.ext li{margin:4px 0}
+.ext code{background:var(--green-soft);padding:1px 6px;border-radius:6px;font-size:.92em}
+.ext button{margin:0 0 12px}
+.xhead{font-size:.95rem;color:var(--muted);margin:0 0 -4px;font-weight:500}
+.xj .bar{margin:10px 0 6px}
+.tag{display:inline-block;background:var(--green-soft);color:var(--ink);border-radius:999px;font-size:.75rem;font-weight:500;padding:0 9px;margin-right:6px;vertical-align:middle}
+.setgrp{margin-top:16px}
+.setgrp>label.lbl{display:block;font-weight:500;margin-bottom:6px}
+select,textarea,input[type=text],input[type=number]{width:100%;font:inherit;padding:12px 14px;border:2px solid var(--line);border-radius:12px;background:var(--card);color:var(--ink)}
+select:focus,textarea:focus,input[type=text]:focus,input[type=number]:focus{outline:3px solid var(--green);outline-offset:1px;border-color:var(--green)}
+.rowf{display:flex;gap:8px}
+.rowf button{flex:0 0 auto;padding:12px 14px;font-size:.95rem}
+.ghost{background:transparent;color:var(--ink);border:2px solid var(--line)}
+.ck{display:flex;gap:10px;align-items:flex-start;margin-top:14px;cursor:pointer}
+.ck input{margin-top:7px;width:18px;height:18px;accent-color:var(--green);flex:none}
+.hint{color:var(--muted);font-size:.85rem;margin:4px 0 0}
+.setmsg{min-height:1.4em;margin:10px 0 0}
+textarea{resize:vertical;min-height:120px;line-height:1.5}
+.two{display:flex;gap:8px}
+.two input{flex:1;min-width:0}
+.banner{border-color:var(--green);border-width:2px;margin:0 0 14px}
+.banner .u{overflow-wrap:anywhere;font-size:.9rem;color:var(--muted);margin:2px 0 0}
+.item .row{flex-wrap:wrap}
+.item .row .meta{flex-basis:100%}
+.snip{background:var(--green-soft);border-radius:10px;padding:6px 10px;margin:8px 0 0;font-size:.92rem;overflow-wrap:anywhere}
+.tx-ok{color:var(--green);font-weight:700}
+dialog{border:0;border-radius:18px;padding:18px;max-width:560px;width:calc(100% - 28px);background:var(--card);color:var(--ink);box-shadow:0 10px 40px rgba(0,0,0,.35)}
+dialog::backdrop{background:rgba(0,0,0,.45)}
+dialog h3{margin:0 0 8px;font-size:1.1rem;overflow-wrap:anywhere}
+dialog .row{display:flex;gap:8px;margin-top:14px;flex-wrap:wrap}
+dialog .row button{flex:1;padding:11px;font-size:.98rem}
+pre.txt{white-space:pre-wrap;overflow-wrap:anywhere;max-height:50vh;overflow:auto;background:var(--bg);border-radius:12px;padding:12px;margin:8px 0 0;font:inherit;line-height:1.7}
+.txj{margin:0 0 10px}
+.credit{text-align:center;font-size:.85rem;color:var(--muted);margin:34px 0 0}
+@media (prefers-reduced-motion:reduce){.bar i{transition:none}}
+</style>
+</head>
+<body>
+<main>
+  <div class="brand">
+    <img src="/logo.png" alt="Insta লোগো">
+    <div><h1>Insta</h1><p class="by">ভিডিও ডাউনলোডার • MH &amp; MIK</p></div>
+  </div>
+  <p class="sub">লিংক পেস্ট করুন, কোয়ালিটি বেছে নিন, ডাউনলোড করুন।</p>
+
+  <div class="tabs" role="tablist">
+    <button role="tab" id="tab-dl" aria-selected="true">ডাউনলোড</button>
+    <button role="tab" id="tab-hist" aria-selected="false">লাইব্রেরি</button>
+    <button role="tab" id="tab-follow" aria-selected="false">ফলো</button>
+    <button role="tab" id="tab-set" aria-selected="false">সেটিংস</button>
+  </div>
+
+  <section id="view-dl">
+    <div class="item banner" id="clipBanner" hidden>
+      <p class="title" style="margin-top:0">📋 ভিডিও লিংক কপি করেছেন। নামাবেন?</p>
+      <p class="u" id="clipUrl"></p>
+      <div class="row">
+        <button id="clipGo">এখনই নামান</button>
+        <button class="ghost" id="clipFind">খুঁজে দেখুন</button>
+        <button class="del" id="clipNo">বাদ দিন</button>
+      </div>
+    </div>
+    <div id="jobs"></div>
+    <div class="field">
+      <input id="url" type="url" inputmode="url" placeholder="ভিডিও বা প্লেলিস্টের লিংক পেস্ট করুন" autocomplete="off">
+      <button id="fetch">খুঁজুন</button>
+    </div>
+    <p class="err" id="err" role="alert"></p>
+
+    <div class="card" id="result" hidden>
+      <img class="thumb" id="thumb" alt="">
+      <p class="title" id="title"></p>
+      <p class="meta" id="meta"></p>
+
+      <label class="check" id="plWrap" hidden>
+        <input type="checkbox" id="plAll">
+        <span id="plText"></span>
+      </label>
+
+      <div class="group">
+        <h3>কোয়ালিটি</h3>
+        <div class="chips" id="chips"></div>
+      </div>
+
+      <div class="group" id="subsWrap" hidden>
+        <h3>সাবটাইটেল (ঐচ্ছিক, .srt ফাইল আলাদা আসবে)</h3>
+        <div class="chips" id="subs"></div>
+      </div>
+
+      <div class="group" id="clipWrap">
+        <h3>শুধু একটি অংশ নামান (ঐচ্ছিক)</h3>
+        <div class="two">
+          <input type="text" id="clipStart" placeholder="শুরু (যেমন ১:৩০)" autocomplete="off" inputmode="text" aria-label="শুরুর সময়">
+          <input type="text" id="clipEnd" placeholder="শেষ (যেমন ২:৪৫)" autocomplete="off" inputmode="text" aria-label="শেষের সময়">
+        </div>
+        <p class="hint">খালি রাখলে পুরোটা নামবে। সময় লিখুন সেকেন্ডে (৯০) বা ১:৩০ / ১:০২:০৩ ভাবে। শুধু শুরু দিলে শেষ পর্যন্ত, শুধু শেষ দিলে শুরু থেকে। অংশ কাটতে সময় লাগে এবং অগ্রগতি দেখা না-ও যেতে পারে।</p>
+      </div>
+
+      <div class="group">
+        <h3>ডাউনলোডের পর অটো কাজ (ঐচ্ছিক, ffmpeg দিয়ে)</h3>
+        <div class="chips" id="postChips"></div>
+        <p class="hint">কমপ্রেসে আসল ফাইলের বদলে ছোট ফাইল থাকে। MP3 ও ভার্টিক্যালে আসল ভিডিওও থাকে।</p>
+      </div>
+
+      <button class="go" id="download">ডাউনলোড শুরু করুন</button>
+
+      <div id="progress" hidden>
+        <p class="meta" id="pText"></p>
+      </div>
+    </div>
+    <details class="ext" id="batchBox">
+      <summary>একসাথে অনেক লিংক নামান (ব্যাচ)</summary>
+      <div class="setgrp" style="margin-top:6px">
+        <label class="lbl" for="batchUrls">প্রতি লাইনে একটি লিংক (সর্বোচ্চ ৫০টি)</label>
+        <textarea id="batchUrls" spellcheck="false" placeholder="https://www.youtube.com/watch?v=...&#10;https://www.facebook.com/reel/..."></textarea>
+      </div>
+      <div class="setgrp">
+        <label class="lbl" for="batchQuality">কোয়ালিটি</label>
+        <select id="batchQuality"></select>
+      </div>
+      <div class="setgrp">
+        <label class="lbl" for="batchPost">ডাউনলোডের পর অটো কাজ</label>
+        <select id="batchPost"></select>
+      </div>
+      <label class="ck"><input type="checkbox" id="batchPl"><span>প্লেলিস্টের লিংক থাকলে পুরো প্লেলিস্ট নামান (জিপে)</span></label>
+      <button class="go" id="batchGo" style="margin-top:16px">সব কিউতে যোগ করুন</button>
+      <p class="setmsg" id="batchMsg" role="status"></p>
+    </details>
+    <p class="note"><button class="link-btn" id="upd" style="color:var(--green);padding-left:0">yt-dlp আপডেট করুন</button> <span id="updMsg"></span><br>কোনো সাইট কাজ না করলে আগে এটি চাপুন।</p>
+    <details class="ext">
+      <summary>Chrome এক্সটেনশন: ফেসবুক, ইনস্টাগ্রাম ও ইউটিউব থেকে এক ক্লিকে ডাউনলোড</summary>
+      <ol>
+        <li>নিচের বাটনে চাপুন, এক্সটেনশনের ফোল্ডার খুলবে।</li>
+        <li>Chrome-এর ঠিকানার ঘরে <code>chrome://extensions</code> লিখে Enter চাপুন।</li>
+        <li>ডানে উপরে <b>Developer mode</b> চালু করুন।</li>
+        <li><b>Load unpacked</b> চেপে খোলা <code>extension</code> ফোল্ডারটি বেছে নিন।</li>
+        <li>এরপর ভিডিও পেজে "Insta-তে ডাউনলোড" বাটন আসবে। কাজ করতে Insta অ্যাপ চালু থাকতে হবে।</li>
+      </ol>
+      <button id="extOpen">এক্সটেনশন ফোল্ডার খুলুন</button> <span class="meta" id="extMsg"></span>
+    </details>
+    <p class="note">শুধু নিজের ভিডিও বা যেসব কনটেন্ট ডাউনলোডের অনুমতি আছে সেগুলোই নামান। কপিরাইট ও প্ল্যাটফর্মের নীতিমালা মেনে চলা আপনার দায়িত্ব।</p>
+  </section>
+
+  <section id="view-hist" hidden>
+    <div class="hist-head">
+      <h2>লাইব্রেরি</h2>
+      <div><button class="link-btn" id="libScan">ফোল্ডার স্ক্যান</button><button class="link-btn" id="clearAll">তালিকা মুছুন</button></div>
+    </div>
+    <div id="txTasks"></div>
+    <input type="text" id="libQ" placeholder="খুঁজুন: নাম, লিংক বা ট্রান্সক্রিপ্টের কথা" autocomplete="off" aria-label="লাইব্রেরিতে খুঁজুন">
+    <div class="two" style="margin-top:8px">
+      <select id="libKind" aria-label="ফিল্টার">
+        <option value="all">সব</option><option value="video">ভিডিও</option><option value="audio">অডিও</option>
+        <option value="playlist">প্লেলিস্ট</option><option value="tx">ট্রান্সক্রিপ্টসহ</option><option value="missing">ফাইল নেই</option>
+      </select>
+      <select id="libSort" aria-label="সাজানো">
+        <option value="new">নতুন আগে</option><option value="old">পুরোনো আগে</option>
+        <option value="size">বড় ফাইল আগে</option><option value="name">নাম অনুযায়ী</option>
+      </select>
+    </div>
+    <p class="hint" id="libStat" role="status"></p>
+    <div id="histList"></div>
+  </section>
+  <section id="view-follow" hidden>
+    <div class="hist-head"><h2>ফলো (নতুন ভিডিও নিজে থেকে নামানো)</h2></div>
+    <p class="hint">কোনো চ্যানেল বা প্লেলিস্ট ফলো করলে Insta নির্দিষ্ট সময় পরপর নতুন ভিডিও খুঁজে নিজেই নামিয়ে দেবে। এজন্য অ্যাপ চালু থাকতে হবে (ট্রে-তে থাকলেও চলে)। প্রতিবারে সর্বোচ্চ ১০টি নতুন ভিডিও নামে।</p>
+    <div class="item">
+      <label class="lbl" for="fwUrl">চ্যানেল বা প্লেলিস্টের লিংক</label>
+      <input type="text" id="fwUrl" placeholder="https://www.youtube.com/@চ্যানেলের-নাম" autocomplete="off">
+      <div class="two" style="margin-top:8px">
+        <div><label class="lbl" for="fwQ">কোয়ালিটি</label><select id="fwQ"></select></div>
+        <div><label class="lbl" for="fwEvery">কত পরপর দেখবে</label>
+          <select id="fwEvery"><option value="1">প্রতি ১ ঘণ্টা</option><option value="3">প্রতি ৩ ঘণ্টা</option><option value="6" selected>প্রতি ৬ ঘণ্টা</option><option value="12">প্রতি ১২ ঘণ্টা</option><option value="24">প্রতি ২৪ ঘণ্টা</option></select></div>
+      </div>
+      <label class="lbl" for="fwBack" style="margin-top:8px;display:block">শুরুতে</label>
+      <select id="fwBack"><option value="0">শুধু এখন থেকে আসা নতুন ভিডিও</option><option value="3">সর্বশেষ ৩টিও নামান</option><option value="5">সর্বশেষ ৫টিও নামান</option><option value="10">সর্বশেষ ১০টিও নামান</option></select>
+      <div class="row" style="margin-top:10px"><button id="fwAdd">ফলো করুন</button></div>
+      <p class="setmsg" id="fwMsg" role="status"></p>
+    </div>
+    <div id="fwList"></div>
+  </section>
+
+  <section id="view-set" hidden>
+    <div class="hist-head"><h2>সেটিংস</h2></div>
+
+    <div class="setgrp">
+      <label class="lbl" for="setFolder">ডাউনলোড ফোল্ডার</label>
+      <div class="rowf">
+        <input type="text" id="setFolder" autocomplete="off" spellcheck="false">
+        <button class="ghost" id="setPick" hidden>বাছুন</button>
+        <button class="ghost" id="setReset">ডিফল্ট</button>
+      </div>
+      <p class="hint" id="setFolderHint"></p>
+    </div>
+
+    <div class="setgrp">
+      <label class="lbl" for="setQuality">ডিফল্ট কোয়ালিটি (এক্সটেনশন থেকে ডাউনলোডেও এটি চলে)</label>
+      <select id="setQuality">
+        <option value="best">সেরা কোয়ালিটি</option>
+        <option value="1080">১০৮০p</option>
+        <option value="720">৭২০p</option>
+        <option value="480">৪৮০p</option>
+        <option value="360">৩৬০p</option>
+        <option value="audio">শুধু অডিও (MP3)</option>
+      </select>
+    </div>
+
+    <div class="setgrp">
+      <label class="lbl" for="setPost">ডাউনলোডের পর অটো কাজ (ডিফল্ট)</label>
+      <select id="setPost">
+        <option value="none">কিছু না</option>
+        <option value="mp3">MP3-ও বের করুন</option>
+        <option value="compress">ছোট সাইজে কমপ্রেস (সর্বোচ্চ ৭২০p)</option>
+        <option value="vertical">৯:১৬ ভার্টিক্যাল (ঝাপসা ব্যাকগ্রাউন্ডসহ)</option>
+      </select>
+    </div>
+
+    <div class="setgrp">
+      <label class="lbl" for="setTemplate">ফাইলের নাম</label>
+      <select id="setTemplate">
+        <option value="title">শিরোনাম</option>
+        <option value="uploader_title">চ্যানেল - শিরোনাম</option>
+        <option value="title_id">শিরোনাম [ভিডিও আইডি]</option>
+      </select>
+    </div>
+
+    <div class="setgrp">
+      <label class="lbl" for="setParallel">একসাথে সর্বোচ্চ কয়টি ডাউনলোড চলবে</label>
+      <select id="setParallel">
+        <option value="1">১টি</option><option value="2">২টি</option><option value="3">৩টি</option>
+        <option value="4">৪টি</option><option value="5">৫টি</option>
+      </select>
+      <p class="hint">বাকিগুলো লাইনে অপেক্ষা করবে।</p>
+    </div>
+
+    <div class="setgrp">
+      <label class="lbl" for="setLimit">গতি-সীমা (MB/s, ০ = সীমাহীন)</label>
+      <input type="number" id="setLimit" min="0" max="1000" step="0.5" inputmode="decimal">
+    </div>
+
+    <div class="setgrp">
+      <label class="lbl" for="setWhisper">ট্রান্সক্রিপ্টের মডেল (ভিডিও থেকে লেখা বের করা)</label>
+      <select id="setWhisper">
+        <option value="tiny">দ্রুত (tiny, ~৭৫ MB) — বাংলায় ভুল বেশি</option>
+        <option value="base">মাঝারি (base, ~১৪০ MB)</option>
+        <option value="small">সেরা মান (small, ~৪৭০ MB) — বাংলার জন্য ভালো, ধীর</option>
+      </select>
+      <p class="hint">মডেল প্রথমবার ব্যবহারে একবারই নামে, এরপর সব কাজ ইন্টারনেট ছাড়াই চলে।</p>
+    </div>
+
+    <div class="setgrp">
+      <label class="lbl" for="setTheme">থিম</label>
+      <select id="setTheme">
+        <option value="auto">কম্পিউটারের সাথে মিলিয়ে</option>
+        <option value="light">লাইট</option>
+        <option value="dark">ডার্ক</option>
+      </select>
+    </div>
+
+    <div id="winOpts">
+      <label class="ck"><input type="checkbox" id="setTray"><span>জানালা বন্ধ করলে ট্রে-তে (ঘড়ির পাশে) চলতে থাকবে। এক্সটেনশন কাজ করতে অ্যাপ চালু থাকা দরকার, তাই এটি চালু রাখা ভালো।</span></label>
+      <label class="ck"><input type="checkbox" id="setAuto"><span>Windows চালু হলে Insta নিজে থেকে ট্রে-তে চালু হবে।<br><span class="hint" id="autoHint"></span></span></label>
+      <label class="ck"><input type="checkbox" id="setClip"><span>ইউটিউব, ফেসবুক বা ইনস্টাগ্রামের ভিডিও লিংক কপি করলে নামানোর প্রস্তাব দেখাবে। শুধু এই সাইটের লিংক চেনা হয়, ক্লিপবোর্ডের অন্য কিছু সংরক্ষণ করা হয় না।</span></label>
+      <label class="ck"><input type="checkbox" id="setNotify"><span>ডাউনলোড শেষ হলে বা ব্যর্থ হলে নোটিফিকেশন দেখাবে।</span></label>
+    </div>
+
+    <button class="go" id="setSave" style="margin-top:22px">সেটিংস সেভ করুন</button>
+    <p class="setmsg" id="setMsg" role="status"></p>
+  </section>
+  <dialog id="txDlg">
+    <h3 id="txDlgTitle"></h3>
+    <div class="setgrp" style="margin-top:8px">
+      <label class="lbl" for="txLang">ভিডিওর ভাষা</label>
+      <select id="txLang">
+        <option value="auto">নিজে থেকে চিনবে</option><option value="bn">বাংলা</option><option value="en">ইংরেজি</option>
+        <option value="hi">হিন্দি</option><option value="ur">উর্দু</option><option value="ne">নেপালি</option><option value="ar">আরবি</option>
+        <option value="fa">ফার্সি</option><option value="id">ইন্দোনেশীয়</option><option value="tr">তুর্কি</option>
+        <option value="es">স্প্যানিশ</option><option value="fr">ফরাসি</option><option value="de">জার্মান</option>
+        <option value="ru">রুশ</option><option value="zh">চীনা</option><option value="ja">জাপানি</option><option value="ko">কোরিয়ান</option>
+      </select>
+    </div>
+    <label class="ck"><input type="checkbox" id="txTr"><span>ইংরেজিতে অনুবাদ করে লিখুন (যেকোনো ভাষা থেকে ইংরেজি, ইন্টারনেট ছাড়াই)</span></label>
+    <p class="hint" id="txInfo"></p>
+    <p class="setmsg" id="txMsg" role="status"></p>
+    <div class="row"><button id="txGo">শুরু করুন</button><button class="ghost" id="txCancel">বাদ দিন</button></div>
+  </dialog>
+  <dialog id="opDlg">
+    <h3 id="opTitle"></h3>
+    <div id="opBurn">
+      <div class="two">
+        <div><label class="lbl" for="opSize">লেখার সাইজ</label><select id="opSize"><option value="small">ছোট</option><option value="medium" selected>মাঝারি</option><option value="large">বড়</option></select></div>
+        <div><label class="lbl" for="opPos">কোথায় থাকবে</label><select id="opPos"><option value="bottom" selected>নিচে</option><option value="middle">মাঝখানে</option><option value="top">উপরে</option></select></div>
+      </div>
+      <label class="lbl" for="opColor" style="margin-top:8px;display:block">লেখার রং</label>
+      <select id="opColor"><option value="white" selected>সাদা</option><option value="yellow">হলুদ</option></select>
+      <label class="ck"><input type="checkbox" id="opBox"><span>লেখার পেছনে কালচে বক্স দিন (পড়তে সুবিধা)</span></label>
+      <p class="hint">ট্রান্সক্রিপ্টের SRT ফাইল ভিডিওতে স্থায়ীভাবে বসানো হবে। মূল ভিডিও অক্ষত থাকে, নতুন একটি ভিডিও তৈরি হয়। ভিডিও নতুন করে এনকোড হয় বলে সময় লাগে।</p>
+    </div>
+    <div id="opSil">
+      <label class="lbl" for="opLevel">কতটা কড়াভাবে কাটবে</label>
+      <select id="opLevel">
+        <option value="gentle">হালকা: ১ সেকেন্ডের বেশি লম্বা বিরতিই শুধু</option>
+        <option value="normal" selected>মাঝারি (প্রস্তাবিত): ০.৬ সেকেন্ডের বেশি বিরতি</option>
+        <option value="strong">কড়া: ০.৩৫ সেকেন্ডের বেশি বিরতিও</option>
+      </select>
+      <p class="hint">কথার মাঝের নীরব অংশ কেটে ছোট ফাইল তৈরি হয়, মূল ফাইল অক্ষত থাকে। ব্যাকগ্রাউন্ডে গান বা শব্দ চললে নীরবতা ধরা কঠিন হয়। কড়া মাত্রায় কথা কিছুটা তাড়াহুড়ো শোনাতে পারে।</p>
+    </div>
+    <p class="setmsg" id="opMsg" role="status"></p>
+    <div class="row"><button id="opGo">শুরু করুন</button><button class="ghost" id="opCancel">বাদ দিন</button></div>
+  </dialog>
+  <dialog id="thDlg">
+    <h3 id="thTitle"></h3>
+    <div class="two" style="align-items:end">
+      <div style="flex:1"><label class="lbl" for="thCount">কয়টি ছবি</label>
+        <select id="thCount"><option value="6">৬টি</option><option value="12" selected>১২টি</option><option value="24">২৪টি</option></select></div>
+      <button id="thGo" style="flex:1">ছবি বানান</button>
+    </div>
+    <p class="hint">ভিডিওকে সমান ভাগে ভাগ করে প্রতি অংশ থেকে সবচেয়ে ভালো (কালো বা ঝাপসা নয়) ফ্রেমটি ছবি হিসেবে রাখা হয়। ছবিগুলো ভিডিওর পাশে আলাদা ফোল্ডারে সেভ হয়।</p>
+    <div id="thGrid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:6px;margin-top:8px"></div>
+    <p class="setmsg" id="thMsg" role="status"></p>
+    <div class="row"><button class="ghost" id="thOpen" hidden>ফোল্ডার খুলুন</button><button class="ghost" id="thClose">বন্ধ</button></div>
+  </dialog>
+  <dialog id="shDlg">
+    <h3 id="shTitle"></h3>
+    <div style="text-align:center"><img id="shQr" alt="QR কোড" style="width:210px;height:210px;background:#fff;border-radius:12px;padding:6px"></div>
+    <p class="u" id="shUrl" style="user-select:all;text-align:center;margin:8px 0 0"></p>
+    <p class="hint" id="shInfo"></p>
+    <p class="hint">ফোন ও কম্পিউটার একই Wi-Fi-তে থাকতে হবে। ফোনের ক্যামেরায় QR স্ক্যান করলে ভিডিও সরাসরি দেখা বা নামানো যাবে। এই নেটওয়ার্কে যে কেউ লিংকটি পেলে ফাইলটি নামাতে পারবে, তাই কাজ শেষে শেয়ার বন্ধ করে দিন। প্রথমবার Windows ফায়ারওয়াল অনুমতি চাইতে পারে: "Private networks"-এ অনুমতি দিন।</p>
+    <p class="setmsg" id="shMsg" role="status"></p>
+    <div class="row"><button id="shCopy">লিংক কপি</button><button class="del" id="shStop">শেয়ার বন্ধ করুন</button><button class="ghost" id="shClose">বন্ধ</button></div>
+  </dialog>
+  <dialog id="txView">
+    <h3 id="txVTitle"></h3>
+    <p class="hint" id="txVInfo"></p>
+    <pre class="txt" id="txVText"></pre>
+    <div class="row">
+      <button id="txVCopy">কপি করুন</button>
+      <button class="ghost" id="txVSrt">সাবটাইটেল (SRT) খুলুন</button>
+      <button class="ghost" id="txVAgain">আবার করুন</button>
+      <button class="ghost" id="txVClose">বন্ধ</button>
+    </div>
+  </dialog>
+  <p class="credit">Insta • তৈরি করেছেন MH &amp; MIK</p>
+</main>
+
+<script>
+const $ = id => document.getElementById(id);
+const MAX = 50;
+const TOKEN = new URLSearchParams(location.search).get("t") || "";
+let current = "", info = null;
+
+const toBn = n => String(n).replace(/\d/g, d => "০১২৩৪৫৬৭৮৯"[d]);
+const fmtDur = s => s ? Math.floor(s/60) + ":" + String(s%60).padStart(2,"0") : "";
+function langName(c){ try { return new Intl.DisplayNames(["bn"],{type:"language"}).of(c) || c; } catch { return c; } }
+
+function el(tag, props = {}, ...kids){
+  const e = Object.assign(document.createElement(tag), props);
+  kids.forEach(k => e.append(k));
+  return e;
+}
+
+async function api(path, method = "GET", body){
+  const r = await fetch(path, {method, headers: {"Content-Type":"application/json", "X-Token": TOKEN}, body: body ? JSON.stringify(body) : undefined});
+  const j = await r.json();
+  if(!r.ok) throw new Error(j.error || "কিছু একটা ভুল হয়েছে।");
+  return j;
+}
+
+/* ---------- ট্যাব ---------- */
+let SET = null;
+function canPick(){ return !!(window.pywebview && window.pywebview.api && window.pywebview.api.pick_folder); }
+function showTab(name){
+  for(const n of ["dl","hist","follow","set"]){
+    $("view-" + n).hidden = n !== name;
+    $("tab-" + n).setAttribute("aria-selected", n === name);
+  }
+  if(name === "hist") loadLibrary(); else stopTxPoll();
+  if(name === "follow") loadFollows();
+  if(name === "set"){ $("setPick").hidden = !canPick(); }
+}
+$("tab-dl").onclick = () => showTab("dl");
+$("tab-follow").onclick = () => showTab("follow");
+$("tab-hist").onclick = () => showTab("hist");
+$("tab-set").onclick = () => showTab("set");
+window.addEventListener("pywebviewready", () => { $("setPick").hidden = !canPick(); });
+
+/* ---------- খোঁজা ---------- */
+function makeChip(type, name, value, text, checked, data = {}){
+  const input = el("input", {type, name, value, checked});
+  Object.assign(input.dataset, data);
+  return el("label", {}, input, el("span", {textContent: text}));
+}
+
+function syncClipWrap(){ $("clipWrap").hidden = !!(info && info.kind === "playlist") || $("plAll").checked; }
+$("plAll").addEventListener("change", syncClipWrap);
+
+$("fetch").onclick = async () => {
+  $("err").textContent = ""; $("result").hidden = true;
+  current = $("url").value.trim();
+  $("fetch").disabled = true; $("fetch").textContent = "খোঁজা হচ্ছে…";
+  try{
+    info = await api("/api/info", "POST", {url: current});
+    $("thumb").src = info.thumbnail || ""; $("thumb").alt = info.title;
+    $("title").textContent = info.title;
+
+    const isPl = info.kind === "playlist";
+    $("meta").textContent = isPl
+      ? [info.uploader, toBn(info.count) + "টি ভিডিও"].filter(Boolean).join(" • ")
+      : [info.uploader, info.duration ? "সময়: " + toBn(fmtDur(info.duration)) : ""].filter(Boolean).join(" • ");
+
+    // প্লেলিস্ট চেকবক্স
+    $("plWrap").hidden = !(isPl || info.also_playlist);
+    $("plAll").checked = isPl;
+    $("plAll").disabled = isPl;
+    $("plText").textContent = isPl
+      ? `পুরো প্লেলিস্ট নামানো হবে (সর্বোচ্চ ${toBn(MAX)}টি, একটি জিপ ফাইলে)`
+      : `এই ভিডিওর পুরো প্লেলিস্টও নামান (সর্বোচ্চ ${toBn(MAX)}টি, জিপ ফাইলে)`;
+
+    // কোয়ালিটি
+    const q = $("chips"); q.replaceChildren();
+    const wantQ = (SET && SET.quality) || "best";
+    const avail = ["best", ...info.heights.map(String), "audio"];
+    const pickQ = avail.includes(wantQ) ? wantQ : "best";
+    q.append(makeChip("radio","q","best","সেরা কোয়ালিটি", pickQ === "best"));
+    info.heights.forEach(h => q.append(makeChip("radio","q",String(h),toBn(h)+"p", pickQ === String(h))));
+    q.append(makeChip("radio","q","audio", info.has_ffmpeg ? "শুধু অডিও (MP3)" : "শুধু অডিও", pickQ === "audio"));
+
+    // ডাউনলোডের পর অটো কাজ
+    const pc = $("postChips"); pc.replaceChildren();
+    [["none","কিছু না"],["mp3","MP3-ও বের করুন"],["compress","ছোট সাইজ (৭২০p)"],["vertical","৯:১৬ ভার্টিক্যাল"]]
+      .forEach(([v, t]) => pc.append(makeChip("radio","post",v,t,((SET && SET.post) || "none") === v)));
+
+    // সাবটাইটেল
+    const s = $("subs"); s.replaceChildren();
+    info.subs.forEach(x => {
+      const label = langName(x.lang) + (x.auto === true ? " (অটো)" : "");
+      s.append(makeChip("checkbox","sub",x.lang,label,false,{auto: String(x.auto)}));
+    });
+    $("subsWrap").hidden = info.subs.length === 0;
+
+    $("clipStart").value = ""; $("clipEnd").value = ""; syncClipWrap();
+    $("progress").hidden = true; $("download").disabled = false;
+    $("result").hidden = false;
+  }catch(e){ $("err").textContent = e.message; }
+  $("fetch").disabled = false; $("fetch").textContent = "খুঁজুন";
+};
+
+/* ---------- ডাউনলোড (কিউতে যোগ) ---------- */
+$("download").onclick = async () => {
+  $("err").textContent = "";
+  const q = document.querySelector("input[name=q]:checked").value;
+  const post = (document.querySelector("input[name=post]:checked") || {}).value || "none";
+  const subs = [...document.querySelectorAll("input[name=sub]:checked")].map(i => ({
+    lang: i.value, auto: i.dataset.auto === "true" ? true : i.dataset.auto === "false" ? false : null
+  }));
+  const body = {
+    url: current,
+    kind: q === "audio" ? "audio" : "video",
+    height: /^\d+$/.test(q) ? q : null,
+    playlist: $("plAll").checked,
+    title: info.title,
+    post,
+    start: $("clipStart").value.trim(),
+    end: $("clipEnd").value.trim(),
+    subs
+  };
+  $("download").disabled = true;
+  try{
+    await api("/api/download", "POST", body);
+    $("progress").hidden = false;
+    $("pText").textContent = "✓ ডাউনলোড তালিকায় যোগ হয়েছে। অগ্রগতি উপরে দেখুন।";
+    pollJobs();
+    window.scrollTo({top: 0, behavior: "smooth"});
+  }catch(e){ $("err").textContent = e.message; }
+  $("download").disabled = false;
+};
+
+$("upd").onclick = async () => {
+  $("upd").disabled = true; $("updMsg").textContent = "আপডেট হচ্ছে…";
+  try{
+    const r = await api("/api/update", "POST", {});
+    $("updMsg").textContent = r.status === "DONE" ? "আপডেট হয়েছে (" + r.version + ")" : "ইতিমধ্যে সর্বশেষ (" + r.version + ")";
+  }catch(e){ $("updMsg").textContent = e.message; }
+  $("upd").disabled = false;
+};
+
+/* ---------- ফোল্ডারে দেখান ---------- */
+function reveal(id){
+  api("/api/reveal", "POST", {id}).catch(e => { $("err").textContent = e.message; });
+}
+$("url").addEventListener("keydown", e => { if(e.key === "Enter") $("fetch").click(); });
+$("url").focus();
+
+/* ---------- ডাউনলোড তালিকা (অ্যাপ ও এক্সটেনশন, কিউ নিয়ন্ত্রণসহ) ---------- */
+const jEls = new Map();
+const BTNS = {
+  queued:      [["pause", "থামান"], ["cancel", "বাতিল", "del"]],
+  downloading: [["pause", "থামান"], ["cancel", "বাতিল", "del"]],
+  processing:  [["cancel", "বাতিল", "del"]],
+  paused:      [["resume", "চালু করুন"], ["cancel", "বাতিল", "del"]],
+  done:        [["show", "ফোল্ডারে দেখান"], ["dismiss", "সরান", "del"]],
+  error:       [["retry", "আবার চেষ্টা"], ["dismiss", "সরান", "del"]],
+  cancelled:   [["retry", "আবার চেষ্টা"], ["dismiss", "সরান", "del"]]
+};
+
+async function jobAction(id, act){
+  $("err").textContent = "";
+  try{
+    if(act === "show") reveal(id);
+    else if(act === "dismiss") await api("/api/jobs/" + id, "DELETE");
+    else await api("/api/jobs/" + id + "/" + act, "POST", {});
+  }catch(e){ $("err").textContent = e.message; }
+  pollJobs();
+}
+
+function metaText(j){
+  const part = j.total > 1 ? `${toBn(j.index)}/${toBn(j.total)} • ` : "";
+  const warn = j.warning ? " ⚠ " + j.warning : "";
+  switch(j.status){
+    case "queued": return "লাইনে অপেক্ষা করছে…";
+    case "downloading": if(j.clip && !j.percent) return "অংশ কেটে নামছে… (সময় লাগতে পারে)"; return part + toBn(Math.round(j.percent || 0)) + "%" + (j.speed ? " • " + j.speed : "") + (j.eta ? " • বাকি " + j.eta : "");
+    case "processing": return j.stage || "ফাইল তৈরি হচ্ছে…";
+    case "paused": return "থামানো আছে • " + toBn(Math.round(j.percent || 0)) + "%";
+    case "done": return "ডাউনলোড সম্পূর্ণ। ফোল্ডারে সেভ হয়েছে।" + warn;
+    case "cancelled": return "বাতিল করা হয়েছে।";
+    default: return j.error || "ডাউনলোড ব্যর্থ হয়েছে।";
+  }
+}
+
+async function pollJobs(){
+  let list;
+  try { list = await api("/api/jobs"); } catch { return; }
+  const box = $("jobs"), ids = new Set(list.map(j => j.id));
+  for(const [id, o] of jEls){ if(!ids.has(id)){ o.root.remove(); jEls.delete(id); } }
+  if(!list.length){ box.replaceChildren(); return; }
+  if(!box.querySelector(".xhead")) box.prepend(el("p", {className:"xhead", textContent:"ডাউনলোড তালিকা"}));
+
+  list.forEach((j, i) => {
+    let o = jEls.get(j.id);
+    if(!o){
+      const tag = el("span", {className:"tag", textContent:"এক্সটেনশন"});
+      const tx = document.createTextNode("");
+      const title = el("p", {className:"title", style:"margin-top:0"}, tag, tx);
+      const fill = el("i"), bar = el("div", {className:"bar"}, fill);
+      const meta = el("p", {className:"meta"});
+      const row = el("div", {className:"row"});
+      const root = el("div", {className:"item xj"}, title, bar, meta, row);
+      o = {root, tag, tx, fill, meta, row, status: ""};
+      jEls.set(j.id, o);
+    }
+    o.tag.hidden = j.source !== "ext";
+    o.tx.nodeValue = j.title;
+    o.fill.style.width = (j.status === "done" ? 100 : (j.percent || 0)) + "%";
+    o.meta.textContent = metaText(j);
+    o.meta.style.color = j.status === "error" ? "var(--red)" : "";
+    if(o.status !== j.status){   // বাটন শুধু অবস্থা বদলালে নতুন করে বসে
+      o.status = j.status;
+      o.row.replaceChildren(...(BTNS[j.status] || []).map(([act, text, cls]) =>
+        el("button", {textContent: text, className: cls || "", onclick: () => jobAction(j.id, act)})));
+    }
+    const at = box.children[i + 1];
+    if(at !== o.root) box.insertBefore(o.root, at || null);
+  });
+}
+/* ---------- ক্লিপবোর্ডের লিংক ধরা ---------- */
+let clipUrl = null;
+async function pollClip(){
+  let r;
+  try { r = await api("/api/clipboard"); } catch { return; }
+  clipUrl = r.url || null;
+  $("clipBanner").hidden = !clipUrl;
+  if(clipUrl) $("clipUrl").textContent = clipUrl;
+}
+async function clipClear(){ try { await api("/api/clipboard", "DELETE"); } catch {} clipUrl = null; $("clipBanner").hidden = true; }
+$("clipNo").onclick = clipClear;
+$("clipGo").onclick = async () => {
+  const u = clipUrl; if(!u) return;
+  try { await api("/api/batch", "POST", {urls: [u]}); } catch(e){ $("err").textContent = e.message; }
+  await clipClear(); pollJobs();
+};
+$("clipFind").onclick = () => {
+  const u = clipUrl; if(!u) return;
+  clipClear(); showTab("dl"); $("url").value = u; $("fetch").click();
+};
+
+/* ---------- ব্যাচ ---------- */
+function fillBatchDefaults(){
+  const q = $("batchQuality"), p = $("batchPost");
+  if(!q.options.length){ q.innerHTML = $("setQuality").innerHTML; p.innerHTML = $("setPost").innerHTML; }
+  if(SET){ q.value = SET.quality; p.value = SET.post; }
+}
+$("batchBox").addEventListener("toggle", fillBatchDefaults);
+$("batchGo").onclick = async () => {
+  const msg = $("batchMsg"); msg.textContent = ""; msg.style.color = "";
+  const urls = $("batchUrls").value.split(/\r?\n/).map(x => x.trim()).filter(Boolean);
+  if(!urls.length){ msg.textContent = "আগে লিংকগুলো পেস্ট করুন।"; msg.style.color = "var(--red)"; return; }
+  $("batchGo").disabled = true;
+  try{
+    const r = await api("/api/batch", "POST", {urls, quality: $("batchQuality").value, post: $("batchPost").value, playlist: $("batchPl").checked});
+    msg.textContent = "✓ " + toBn(r.added) + "টি লিংক তালিকায় যোগ হয়েছে।" + (r.invalid ? " " + toBn(r.invalid) + "টি ভুল লিংক বাদ গেছে।" : "");
+    msg.style.color = "var(--green)";
+    $("batchUrls").value = ""; pollJobs();
+    window.scrollTo({top: 0, behavior: "smooth"});
+  }catch(e){ msg.textContent = e.message; msg.style.color = "var(--red)"; }
+  $("batchGo").disabled = false;
+};
+
+setInterval(pollJobs, 1500); pollJobs();
+setInterval(pollClip, 1500); pollClip();
+
+$("extOpen").onclick = async () => {
+  $("extMsg").textContent = "";
+  try { await api("/api/extension", "POST", {}); $("extMsg").textContent = "ফোল্ডার খোলা হয়েছে।"; }
+  catch(e){ $("extMsg").textContent = e.message; }
+};
+
+/* ---------- সেটিংস ---------- */
+function applyTheme(t){
+  const r = document.documentElement;
+  if(t === "light" || t === "dark") r.dataset.theme = t; else delete r.dataset.theme;
+  try{ localStorage.setItem("insta-theme", t || "auto"); }catch{}
+}
+
+function fillSettings(s){
+  $("setFolder").value = s.folder || "";
+  $("setFolder").placeholder = s.default_folder || "";
+  $("setFolderHint").textContent = "খালি রাখলে ডিফল্ট ফোল্ডারে যাবে: " + (s.default_folder || "");
+  $("setQuality").value = s.quality;
+  $("setPost").value = s.post;
+  $("setTemplate").value = s.template;
+  $("setParallel").value = String(s.parallel);
+  $("setLimit").value = s.limit || 0;
+  $("setTheme").value = s.theme;
+  $("setWhisper").value = s.whisper || "small";
+  $("setTray").checked = !!s.tray;
+  $("setAuto").checked = !!s.autostart;
+  $("setNotify").checked = !!s.notify;
+  $("setClip").checked = !!s.clipboard;
+  $("winOpts").hidden = !s.is_windows;
+  $("setAuto").disabled = !s.can_autostart;
+  $("autoHint").textContent = s.can_autostart ? "" : "শুধু বিল্ড করা Insta.exe থেকে চালালে কাজ করে।";
+}
+
+async function loadSettings(){
+  try{
+    SET = await api("/api/settings");
+    fillSettings(SET);
+    applyTheme(SET.theme);
+  }catch(e){ /* সেটিংস না এলে ডিফল্ট নিয়েই চলবে */ }
+}
+
+$("setReset").onclick = () => { $("setFolder").value = ""; };
+$("setPick").onclick = async () => {
+  try{
+    const r = await window.pywebview.api.pick_folder();
+    if(r) $("setFolder").value = r;
+  }catch(e){ $("setMsg").textContent = "ফোল্ডার বাছাই করা যায়নি, পাথ হাতে লিখুন।"; }
+};
+$("setSave").onclick = async () => {
+  const msg = $("setMsg"); msg.textContent = ""; msg.style.color = "";
+  $("setSave").disabled = true;
+  try{
+    SET = await api("/api/settings", "POST", {
+      folder: $("setFolder").value.trim(),
+      quality: $("setQuality").value,
+      post: $("setPost").value,
+      template: $("setTemplate").value,
+      parallel: parseInt($("setParallel").value, 10),
+      limit: parseFloat($("setLimit").value) || 0,
+      theme: $("setTheme").value,
+      whisper: $("setWhisper").value,
+      tray: $("setTray").checked,
+      autostart: $("setAuto").checked,
+      notify: $("setNotify").checked,
+      clipboard: $("setClip").checked
+    });
+    fillSettings(SET); applyTheme(SET.theme);
+    msg.textContent = "✓ সেভ হয়েছে।"; msg.style.color = "var(--green)";
+  }catch(e){ msg.textContent = e.message; msg.style.color = "var(--red)"; }
+  $("setSave").disabled = false;
+};
+loadSettings();
+
+/* ---------- লাইব্রেরি (ইতিহাস, সার্চ, ট্রান্সক্রিপ্ট) ---------- */
+const KIND = {video: "ভিডিও", audio: "অডিও", playlist: "প্লেলিস্ট"};
+const fmtSize = n => n >= 1073741824 ? toBn((n/1073741824).toFixed(2)) + " GB" : toBn((n/1048576).toFixed(1)) + " MB";
+let libTimer = null, libSeq = 0;
+
+function libParams(){
+  const p = new URLSearchParams({q: $("libQ").value.trim(), kind: $("libKind").value, sort: $("libSort").value});
+  return p.toString();
+}
+
+async function loadLibrary(){
+  const mySeq = ++libSeq, box = $("histList");
+  let data;
+  try { data = await api("/api/library?" + libParams()); }
+  catch(e){ box.replaceChildren(el("p",{className:"empty",textContent:e.message})); return; }
+  if(mySeq !== libSeq) return;   // পুরোনো উত্তর বাদ
+  box.replaceChildren();
+  $("clearAll").hidden = data.total === 0;
+  $("libStat").textContent = data.total ? `${toBn(data.shown)}টি দেখানো হচ্ছে (মোট ${toBn(data.total)}টি) • ${fmtSize(data.size)}` : "";
+  if(!data.items.length){
+    const filtered = $("libQ").value.trim() || $("libKind").value !== "all";
+    box.append(el("p",{className:"empty",textContent: filtered ? "কিছু পাওয়া যায়নি।" : "এখনো কিছু ডাউনলোড করা হয়নি। আগে থেকে ফোল্ডারে ফাইল থাকলে উপরের “ফোল্ডার স্ক্যান” চাপুন।"}));
+  }
+  data.items.forEach(it => box.append(libItem(it)));
+  pollTx(true);
+}
+
+function libItem(it){
+  const when = new Date(it.time).toLocaleString("bn-BD", {dateStyle:"medium", timeStyle:"short"});
+  const q = it.kind === "video" && it.quality ? " " + (it.quality === "best" ? "(সেরা)" : toBn(it.quality)) : "";
+  const subs = it.subs && it.subs.length ? " • সাবটাইটেল: " + it.subs.join(", ") : "";
+  const gone = it.exists === false;
+  const row = el("div", {className: "row"});
+  if(gone) row.append(el("span", {className:"meta", textContent:"ফাইলটি আর নেই (সরানো বা মোছা হয়েছে)"}));
+  else {
+    const open = el("button", {textContent:"খুলুন"});
+    open.onclick = () => act(() => api("/api/open", "POST", {id: it.id}));
+    const show = el("button", {className:"ghost", textContent:"ফোল্ডারে দেখান"});
+    show.onclick = () => reveal(it.id);
+    row.append(open, show);
+    if(it.kind === "video" || it.kind === "audio"){
+      const tx = el("button", {className:"ghost", textContent: it.has_tx ? "📝 ট্রান্সক্রিপ্ট দেখুন" : "📝 ট্রান্সক্রিপ্ট করুন"});
+      tx.onclick = () => it.has_tx ? viewTx(it) : openTxDlg(it);
+      row.append(tx);
+      const sil = el("button", {className:"ghost", textContent:"✂ নীরবতা বাদ দিন"});
+      sil.onclick = () => openOpDlg(it, "silence");
+      row.append(sil);
+    }
+    const ph = el("button", {className:"ghost", textContent:"📱 ফোনে পাঠান"});
+    ph.onclick = () => openShare(it);
+    row.append(ph);
+    if(it.kind === "video"){
+      const th = el("button", {className:"ghost", textContent: it.has_thumbs ? "🖼 ছবিগুলো দেখুন" : "🖼 থাম্বনেইল"});
+      th.onclick = () => openThumbs(it);
+      row.append(th);
+    }
+    if(it.kind === "video" && it.has_tx){
+      const bn = el("button", {className:"ghost", textContent:"🎞 সাবটাইটেল বসান"});
+      bn.onclick = () => openOpDlg(it, "burn");
+      row.append(bn);
+    }
+  }
+  const rm = el("button", {className:"del", textContent:"তালিকা থেকে সরান"});
+  rm.onclick = async () => { await api("/api/library/" + it.id, "DELETE"); loadLibrary(); };
+  row.append(rm);
+  if(!gone){
+    const rf = el("button", {className:"del", textContent:"ফাইলসহ মুছুন"});
+    rf.onclick = async () => {
+      if(!confirm(`“${it.title}” ফাইলটি কম্পিউটার থেকেও মুছে যাবে। নিশ্চিত?`)) return;
+      try{ await api("/api/library/" + it.id + "?file=1", "DELETE"); }catch(e){ alert(e.message); }
+      loadLibrary();
+    };
+    row.append(rf);
+  }
+  const head = el("p", {className:"title", style:"margin-top:0"}, it.title);
+  if(it.has_tx) head.append(" ", el("span", {className:"tag tx-ok", textContent:"ট্রান্সক্রিপ্ট ✓"}));
+  const card = el("div", {className:"item"}, head,
+    el("p", {className:"meta", textContent: `${KIND[it.kind] || it.kind}${q} • ${fmtSize(it.size || 0)} • ${when}${subs}`}));
+  if(it.match === "tx" && it.snippet) card.append(el("p", {className:"snip", textContent:"📝 " + it.snippet}));
+  card.append(row);
+  return card;
+}
+
+async function act(fn){ try{ await fn(); }catch(e){ alert(e.message); } }
+
+$("libQ").addEventListener("input", () => { clearTimeout(libTimer); libTimer = setTimeout(loadLibrary, 250); });
+$("libKind").onchange = loadLibrary;
+$("libSort").onchange = loadLibrary;
+$("libScan").onclick = async () => {
+  $("libScan").disabled = true;
+  try{
+    const r = await api("/api/library/scan", "POST");
+    $("libStat").textContent = r.added ? `✓ ফোল্ডার থেকে ${toBn(r.added)}টি ফাইল যোগ হয়েছে।` : "নতুন কোনো ফাইল পাওয়া যায়নি।";
+    const keep = $("libStat").textContent;
+    await loadLibrary();
+    if(r.added === 0) $("libStat").textContent = keep + " " + $("libStat").textContent;
+  }catch(e){ alert(e.message); }
+  $("libScan").disabled = false;
+};
+$("clearAll").onclick = async () => {
+  if(!confirm("তালিকা মুছে যাবে। ডাউনলোড করা ফাইল কম্পিউটারেই থাকবে। নিশ্চিত?")) return;
+  await api("/api/history", "DELETE"); loadLibrary();
+};
+
+/* ---------- ট্রান্সক্রিপশন ---------- */
+let txItem = null;
+const MODEL_MB = {tiny: "৭৫", base: "১৪০", small: "৪৭০"};
+async function openTxDlg(it){
+  txItem = it;
+  $("txDlgTitle").textContent = "ট্রান্সক্রিপ্ট: " + it.title;
+  $("txMsg").textContent = ""; $("txMsg").style.color = ""; $("txGo").disabled = false;
+  $("txLang").value = "auto"; $("txTr").checked = false;
+  $("txInfo").textContent = "";
+  try{
+    const w = await api("/api/whisper");
+    if(!w.available){ $("txInfo").textContent = "এই বিল্ডে ট্রান্সক্রিপশন ইঞ্জিন নেই।"; $("txGo").disabled = true; }
+    else $("txInfo").textContent = w.ready[w.model]
+      ? `মডেল (${w.model}) তৈরি আছে, ইন্টারনেট লাগবে না। কাজ কম্পিউটারের গতির ওপর নির্ভর করে, বড় ভিডিওতে কিছুটা সময় লাগে।`
+      : `প্রথমবার ${MODEL_MB[w.model]} MB-এর মডেল নামবে (সেটিংসে বদলানো যায়)। এরপর ইন্টারনেট ছাড়াই চলবে।`;
+  }catch(e){ $("txInfo").textContent = e.message; }
+  $("txDlg").showModal();
+}
+$("txCancel").onclick = () => $("txDlg").close();
+$("txGo").onclick = async () => {
+  $("txGo").disabled = true; $("txMsg").textContent = "";
+  try{
+    await api("/api/transcribe", "POST", {id: txItem.id, lang: $("txLang").value, translate: $("txTr").checked});
+    $("txDlg").close(); pollTx(true);
+  }catch(e){ $("txMsg").textContent = e.message; $("txMsg").style.color = "var(--red)"; $("txGo").disabled = false; }
+};
+
+async function viewTx(it){
+  try{
+    const d = await api("/api/transcript/" + it.id);
+    txItem = it;
+    $("txVTitle").textContent = d.title;
+    $("txVInfo").textContent = (d.translate ? "ইংরেজি অনুবাদ" : "ট্রান্সক্রিপ্ট") + (d.truncated ? " • (লেখা বড়, শুরুর অংশ দেখানো হচ্ছে। পুরোটা ফাইলে আছে।)" : "");
+    $("txVText").textContent = d.text.trim() || "(কোনো লেখা নেই)";
+    $("txVSrt").hidden = !d.has_srt;
+    $("txView").showModal();
+  }catch(e){ alert(e.message); }
+}
+$("txVClose").onclick = () => $("txView").close();
+$("txVCopy").onclick = async () => {
+  try{ await navigator.clipboard.writeText($("txVText").textContent); $("txVCopy").textContent = "✓ কপি হয়েছে"; }
+  catch(e){ const r = document.createRange(); r.selectNodeContents($("txVText")); getSelection().removeAllRanges(); getSelection().addRange(r); $("txVCopy").textContent = "নির্বাচিত, Ctrl+C চাপুন"; }
+  setTimeout(() => $("txVCopy").textContent = "কপি করুন", 2500);
+};
+$("txVSrt").onclick = () => act(() => api("/api/open", "POST", {id: txItem.id, what: "srt"}));
+$("txVAgain").onclick = () => { $("txView").close(); openTxDlg(txItem); };
+
+let txPoll = null, txActive = new Set();
+function stopTxPoll(){ clearTimeout(txPoll); txPoll = null; }
+async function pollTx(force){
+  if(force){ stopTxPoll(); }
+  else if(txPoll) return;
+  let tasks = [];
+  try{ tasks = await api("/api/transcribe"); }catch(e){ return; }
+  const box = $("txTasks"); box.replaceChildren();
+  const now = new Set();
+  tasks.forEach(t => {
+    const active = !["done","error","cancelled"].includes(t.status);
+    if(active) now.add(t.id);
+    const pct = t.status === "queued" ? "" : ` • ${toBn(t.pct)}%`;
+    const head = el("p", {className:"meta", textContent:`${({burn:"🎞", silence:"✂", thumbs:"🖼"})[t.kind] || "📝"} ${t.title} — ${t.label}${active ? pct : ""}${t.translate ? " (ইংরেজি অনুবাদ)" : ""}`, style:"margin:0"});
+    const row = el("div", {className:"row"});
+    const b = el("button", {className: active ? "del" : "ghost", textContent: active ? "বাতিল" : "সরান"});
+    b.onclick = async () => { await api(`/api/transcribe/${t.id}/${active ? "cancel" : "dismiss"}`, "POST"); pollTx(true); };
+    row.append(b);
+    const card = el("div", {className:"item txj"}, head);
+    if(active && t.status !== "queued"){ const bar = el("div", {className:"bar"}, el("i", {style:`width:${t.pct}%`})); card.append(bar); }
+    if(t.status === "error") card.append(el("p", {className:"err", textContent:t.error, style:"margin:6px 0 0"}));
+    if(t.warning) card.append(el("p", {className:"meta", textContent:t.warning}));
+    if(t.note && t.status === "done") card.append(el("p", {className:"meta tx-ok", textContent:"✓ " + t.note}));
+    card.append(row); box.append(card);
+  });
+  const finished = [...txActive].some(id => !now.has(id) || (tasks.find(x => x.id === id) || {}).status === "done");
+  txActive = now;
+  if(finished) loadLibrary();
+  const needs = now.size > 0 && !$("view-hist").hidden;
+  txPoll = needs ? setTimeout(() => { txPoll = null; pollTx(); }, 1200) : null;
+}
+
+/* ---------- সাবটাইটেল বসানো / নীরবতা বাদ ---------- */
+let opItem = null, opKind = "";
+function openOpDlg(it, kind){
+  opItem = it; opKind = kind;
+  $("opTitle").textContent = (kind === "burn" ? "🎞 সাবটাইটেল বসান: " : "✂ নীরবতা বাদ দিন: ") + it.title;
+  $("opBurn").hidden = kind !== "burn"; $("opSil").hidden = kind !== "silence";
+  $("opMsg").textContent = ""; $("opMsg").style.color = ""; $("opGo").disabled = false;
+  $("opDlg").showModal();
+}
+$("opCancel").onclick = () => $("opDlg").close();
+$("opGo").onclick = async () => {
+  $("opGo").disabled = true; $("opMsg").textContent = "";
+  try{
+    if(opKind === "burn") await api("/api/burn", "POST", {id: opItem.id, size: $("opSize").value, pos: $("opPos").value, color: $("opColor").value, box: $("opBox").checked});
+    else await api("/api/silence", "POST", {id: opItem.id, level: $("opLevel").value});
+    $("opDlg").close(); pollTx(true);
+  }catch(e){ $("opMsg").textContent = e.message; $("opMsg").style.color = "var(--red)"; $("opGo").disabled = false; }
+};
+
+/* ---------- ফলো ---------- */
+const EVERY = {1:"প্রতি ১ ঘণ্টা", 3:"প্রতি ৩ ঘণ্টা", 6:"প্রতি ৬ ঘণ্টা", 12:"প্রতি ১২ ঘণ্টা", 24:"প্রতি ২৪ ঘণ্টা"};
+function fwDefaults(){
+  const q = $("fwQ");
+  if(!q.options.length) q.innerHTML = $("setQuality").innerHTML;
+  if(SET && !$("fwUrl").value) q.value = SET.quality;
+}
+async function loadFollows(){
+  fwDefaults();
+  const box = $("fwList");
+  let list;
+  try{ list = await api("/api/follows"); }catch(e){ box.replaceChildren(el("p",{className:"empty",textContent:e.message})); return; }
+  box.replaceChildren();
+  if(!list.length) box.append(el("p",{className:"empty",textContent:"এখনো কিছু ফলো করা হয়নি।"}));
+  list.forEach(f => {
+    const when = f.last_check ? new Date(f.last_check).toLocaleString("bn-BD", {dateStyle:"medium", timeStyle:"short"}) : "—";
+    const card = el("div", {className:"item"},
+      el("p", {className:"title", style:"margin-top:0"}, f.title || f.url, f.enabled ? "" : el("span", {className:"tag", textContent:" (বন্ধ)"})),
+      el("p", {className:"u", textContent:f.url}),
+      el("p", {className:"meta", textContent:`${EVERY[f.interval] || ""} • শেষ দেখা: ${when} • এ পর্যন্ত নেমেছে: ${toBn(f.total || 0)}টি`}));
+    if(f.error) card.append(el("p", {className:"err", textContent:f.error}));
+    const q = el("select", {ariaLabel:"কোয়ালিটি"}); q.innerHTML = $("setQuality").innerHTML; q.value = f.quality;
+    q.onchange = () => act(() => api("/api/follows/" + f.id, "POST", {quality:q.value}));
+    const ev = el("select", {ariaLabel:"কত পরপর"}); ev.innerHTML = $("fwEvery").innerHTML; ev.value = String(f.interval);
+    ev.onchange = () => act(() => api("/api/follows/" + f.id, "POST", {interval:+ev.value}));
+    card.append(el("div", {className:"two", style:"margin-top:8px"}, q, ev));
+    const row = el("div", {className:"row"});
+    const now = el("button", {textContent:"এখনই দেখুন"});
+    now.onclick = async () => {
+      now.disabled = true; now.textContent = "দেখা হচ্ছে…";
+      try{ const r = await api("/api/follows/" + f.id + "/check", "POST");
+        $("fwMsg").style.color = r.error ? "var(--red)" : ""; $("fwMsg").textContent = r.error || (r.new ? `✓ ${toBn(r.new)}টি নতুন ভিডিও পাওয়া গেছে, নামানো শুরু হয়েছে।` : "নতুন কোনো ভিডিও নেই।"); }
+      catch(e){ $("fwMsg").textContent = e.message; $("fwMsg").style.color = "var(--red)"; }
+      loadFollows();
+    };
+    const tg = el("button", {className:"ghost", textContent: f.enabled ? "বন্ধ রাখুন" : "চালু করুন"});
+    tg.onclick = async () => { await api("/api/follows/" + f.id, "POST", {enabled: !f.enabled}); loadFollows(); };
+    const rm = el("button", {className:"del", textContent:"ফলো বাদ দিন"});
+    rm.onclick = async () => { if(!confirm("ফলো বাদ যাবে। আগে নামানো ফাইল থাকবে। নিশ্চিত?")) return; await api("/api/follows/" + f.id, "DELETE"); loadFollows(); };
+    row.append(now, tg, rm); card.append(row); box.append(card);
+  });
+}
+$("fwAdd").onclick = async () => {
+  const msg = $("fwMsg"); msg.textContent = ""; msg.style.color = "";
+  const url = $("fwUrl").value.trim();
+  if(!url){ msg.textContent = "আগে চ্যানেল বা প্লেলিস্টের লিংক দিন।"; msg.style.color = "var(--red)"; return; }
+  $("fwAdd").disabled = true; msg.textContent = "ফিড দেখা হচ্ছে… (কয়েক সেকেন্ড লাগতে পারে)";
+  try{
+    const r = await api("/api/follows", "POST", {url, quality:$("fwQ").value, interval:+$("fwEvery").value, backlog:+$("fwBack").value});
+    $("fwUrl").value = "";
+    msg.textContent = r.queued ? `✓ ফলো শুরু হয়েছে, সর্বশেষ ${toBn(r.queued)}টি নামছে।` : "✓ ফলো শুরু হয়েছে। এখন থেকে নতুন ভিডিও এলে নিজে নামবে।";
+  }catch(e){ msg.textContent = e.message; msg.style.color = "var(--red)"; }
+  $("fwAdd").disabled = false; loadFollows();
+};
+
+/* ---------- থাম্বনেইল ---------- */
+let thItem = null, thUrls = [];
+function thClear(){ thUrls.forEach(u => URL.revokeObjectURL(u)); thUrls = []; $("thGrid").replaceChildren(); }
+async function thLoad(){
+  thClear();
+  const r = await api("/api/thumbs/" + thItem.id);
+  $("thOpen").hidden = r.count === 0; $("thGo").textContent = r.count ? "নতুন করে বানান" : "ছবি বানান";
+  for(let i = 1; i <= r.count; i++){
+    const res = await fetch("/api/thumbs/" + thItem.id + "/" + i, {headers: {"X-Token": TOKEN}});
+    if(!res.ok) continue;
+    const u = URL.createObjectURL(await res.blob()); thUrls.push(u);
+    $("thGrid").append(el("img", {src:u, alt:"ছবি " + toBn(i), style:"width:100%;border-radius:8px;display:block"}));
+  }
+}
+async function openThumbs(it){
+  thItem = it; $("thTitle").textContent = "🖼 থাম্বনেইল: " + it.title;
+  $("thMsg").textContent = ""; $("thGo").disabled = false; $("thDlg").showModal();
+  try{ await thLoad(); }catch(e){ $("thMsg").textContent = e.message; }
+}
+$("thGo").onclick = async () => {
+  $("thGo").disabled = true; $("thMsg").textContent = "";
+  try{ await api("/api/thumbs", "POST", {id: thItem.id, count: +$("thCount").value}); $("thDlg").close(); thClear(); pollTx(true); }
+  catch(e){ $("thMsg").textContent = e.message; $("thMsg").style.color = "var(--red)"; $("thGo").disabled = false; }
+};
+$("thOpen").onclick = () => act(() => api("/api/open", "POST", {id: thItem.id, what: "thumbs"}));
+$("thClose").onclick = () => $("thDlg").close();
+$("thDlg").addEventListener("close", thClear);
+
+/* ---------- ফোনে পাঠানো (QR) ---------- */
+let shCur = null, shTimer = null;
+function shTick(){
+  clearInterval(shTimer);
+  const end = Date.now() + shCur.left * 1000;
+  const upd = () => { const l = Math.max(0, Math.round((end - Date.now()) / 1000));
+    $("shInfo").textContent = l ? `মেয়াদ বাকি: ${toBn(Math.floor(l / 60))} মিনিট ${toBn(l % 60)} সেকেন্ড` : "মেয়াদ শেষ, শেয়ার বন্ধ হয়ে গেছে।"; };
+  upd(); shTimer = setInterval(upd, 1000);
+}
+async function openShare(it){
+  $("shTitle").textContent = "📱 ফোনে পাঠান: " + it.title; $("shMsg").textContent = ""; $("shMsg").style.color = "";
+  $("shUrl").textContent = ""; $("shInfo").textContent = ""; $("shQr").removeAttribute("src"); $("shQr").hidden = true;
+  $("shStop").disabled = $("shCopy").disabled = true; $("shDlg").showModal();
+  try{
+    shCur = await api("/api/share", "POST", {id: it.id});
+    $("shUrl").textContent = shCur.url; $("shStop").disabled = $("shCopy").disabled = false;
+    if(shCur.qr){ $("shQr").src = shCur.qr; $("shQr").hidden = false; }
+    shTick();
+  }catch(e){ $("shMsg").textContent = e.message; $("shMsg").style.color = "var(--red)"; }
+}
+$("shCopy").onclick = async () => {
+  try{ await navigator.clipboard.writeText(shCur.url); $("shMsg").textContent = "✓ লিংক কপি হয়েছে"; }
+  catch(e){ const r = document.createRange(); r.selectNodeContents($("shUrl")); getSelection().removeAllRanges(); getSelection().addRange(r); $("shMsg").textContent = "লিংক নির্বাচিত, Ctrl+C চাপুন"; }
+};
+$("shStop").onclick = async () => { try{ await api("/api/share/" + shCur.token, "DELETE"); }catch(e){} $("shDlg").close(); };
+$("shClose").onclick = () => $("shDlg").close();
+$("shDlg").addEventListener("close", () => clearInterval(shTimer));
+</script>
+</body>
+</html>
